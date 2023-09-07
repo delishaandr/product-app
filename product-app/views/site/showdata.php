@@ -6,6 +6,7 @@
 
    $this->title = 'Product List';
    $urlData = Url::to(['site/get-table-data']);
+   $urlDetail = Url::to(['site/get-product-detail']);
 
    $js = <<<js
       $('#showBtn').on('click', function () {
@@ -54,10 +55,10 @@
             [
                'label' => 'Action',
                'format' => 'raw',
-               'value' => function() {
-                  return Button::widget([
-                     'label' => 'View',
-                     'options' => ['class' => 'btn-md btn-primary'],
+               'value' => function($data) {
+                  return Html::button('View', [ 
+                     'class' => 'btn btn-md btn-primary',
+                     'onclick' => 'js:document.location.href="index.php?r=site/get-product-detail&id='.$data->id.'"'
                   ]);
                }
             ]

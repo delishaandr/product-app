@@ -152,7 +152,8 @@ class SiteController extends Controller
         return $this->renderAjax("_getdata", ['dataProvider' => $dataProvider]);
     }
 
-    public function actionShowData() {
+    public function actionShowData() 
+    {
         $dataProvider = new ArrayDataProvider([
             'allModels' => array(),
             'pagination' => [
@@ -161,5 +162,13 @@ class SiteController extends Controller
         ]);
 
         return $this->render('showdata', ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionGetProductDetail($id)
+    {
+        $urltofetchdata = "https://dummyjson.com/products/".$id;
+        $data = json_decode(file_get_contents($urltofetchdata));
+
+        return $this->render("getproductdetail", ['data' => $data]);
     }
 }
