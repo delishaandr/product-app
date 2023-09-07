@@ -137,7 +137,7 @@ class SiteController extends Controller
         return $this->render('testwidget'); 
     }
 
-    public function actionShowData()
+    public function actionGetTableData()
     {
         $urltofetchdata = "https://dummyjson.com/products"; //i expect to return json
         $datas = json_decode(file_get_contents($urltofetchdata));
@@ -149,6 +149,17 @@ class SiteController extends Controller
             ]
         ]);
 
-        return $this->render("showdata", ['dataProvider' => $dataProvider]);
+        return $this->renderAjax("_getdata", ['dataProvider' => $dataProvider]);
+    }
+
+    public function actionShowData() {
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => array(),
+            'pagination' => [
+                'pageSize' => 20,
+            ]
+        ]);
+
+        return $this->render('showdata', ['dataProvider' => $dataProvider]);
     }
 }
