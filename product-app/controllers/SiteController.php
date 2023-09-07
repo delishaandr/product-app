@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\data\ArrayDataProvider;
 
 class SiteController extends Controller
 {
@@ -124,5 +125,30 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionSpeak($message = "default message")
+    { 
+        return $this->render("speak",['message' => $message]); 
+    }
+
+    public function actionTestWidget() 
+    { 
+        return $this->render('testwidget'); 
+    }
+
+    public function actionShowData()
+    {
+        $urltofetchdata = "https://dummyjson.com/products"; //i expect to return json
+        $datas = json_decode(file_get_contents($urltofetchdata));
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $datas->products,
+            'pagination' => [
+                'pageSize' => 20,
+            ]
+        ]);
+
+        return $this->render("showdata", ['dataProvider' => $dataProvider]);
     }
 }
