@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\TPesanan;
 use yii\data\ArrayDataProvider;
 
 class SiteController extends Controller
@@ -170,5 +171,25 @@ class SiteController extends Controller
         $data = json_decode(file_get_contents($urltofetchdata));
 
         return $this->render("getproductdetail", ['data' => $data]);
+    }
+
+    public function actionAddProduct()
+    {
+        $model = new TPesanan();
+        if ($model->load(Yii::$app->request->post())) {
+            // insert ??
+            Yii::$app->db->createCommand()->insert('t_pesanan', [
+                'no_pesanan' => $model->no_pesanan,
+                'tanggal' => $model->tanggal,
+                'nm_supplier' => $model->nm_supplier,
+                'nm_produk' => $model->nm_produk,
+                'total' => $model->total
+            ])->execute();
+
+            return $this->refresh();
+        }
+        return $this->render('addproduct', [
+            'model' => $model,
+        ]);
     }
 }
